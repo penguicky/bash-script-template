@@ -266,7 +266,7 @@ function pretty_print() {
         if [[ -n ${2-} ]]; then
             printf '%b' "$2"
         else
-            printf '%b' "$fg_green"
+            printf '%b' "$fg_red"
         fi
     fi
 

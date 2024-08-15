@@ -45,7 +45,7 @@ export TMP_FILE_PREFIX
 # http://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
 # but use BASH_SOURCE[0]
 SCRIPTPATH=$(
-    cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null || exit
+    cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null || exit
     pwd -P
 )
 readonly SCRIPTPATH
@@ -80,7 +80,7 @@ cleanup() {
 }
 
 usage() {
-    cat <<EOF
+    cat << EOF
 Usage: $0
  TODO
 EOF
@@ -92,28 +92,29 @@ main() {
     # the optional parameters string starting with ':' for silent errors snd h for help usage
     local -r OPTS=':h'
 
-    while builtin getopts ${OPTS} opt "${@}"; do
+    while builtin getopts "${OPTS}" opt "${@}"; do
 
         case $opt in
-        h)
-            usage
-            exit 0
-            ;;
+            h)
+                usage
+                exit 0
+                ;;
 
-        \?)
-            echo "${opt}" ${OPTIND} 'is an invalid option' >&2
-            usage
-            exit "${INVALID_OPTION}"
-            ;;
+            \?)
+                echo "${opt}" "${OPTIND}" 'is an invalid option' >&2
+                usage
+                # shellcheck disable=SC2154
+                exit "${INVALID_OPTION}"
+                ;;
 
-        :)
-            echo 'required argument not found for option -'"${OPTARG}" >&2
-            usage
-            exit "${INVALID_OPTION}"
-            ;;
-        *)
-            echo "Too many options. Can not happen actually :)"
-            ;;
+            :)
+                echo 'required argument not found for option -'"${OPTARG}" >&2
+                usage
+                exit "${INVALID_OPTION}"
+                ;;
+            *)
+                echo "Too many options. Can not happen actually :)"
+                ;;
 
         esac
     done
@@ -128,6 +129,7 @@ main() {
 
 # set a trap for (calling) cleanup all stuff before process
 # termination by SIGHUBs
+# shellcheck disable=SC2172
 trap "cleanup; exit 1" 1 2 3 13 15
 # this is the main executable function at end of script
 main "$@"

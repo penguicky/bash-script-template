@@ -78,6 +78,11 @@ function main() {
     cron_init
     colour_init
     #lock_init system
+
+    #Call functions here
+    sample() {
+        echo "Something"
+    }
 }
 
 # shellcheck source=source.sh
